@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,22 +15,52 @@ export const Contact = () => {
     message: ''
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours to discuss your project.",
-    });
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      propertyAddress: '',
-      serviceType: '',
-      message: ''
-    });
+  // Replace this with your actual Google Apps Script Web App URL
+  const GOOGLE_SCRIPT_URL = 'AKfycby64Sca5a6TUVgBe9WOJOTUDXy7Menbstc8i6s-Itw-njjAVX_1FjEGy_fcOSPfAqNF';
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        mode: 'no-cors' // Required for Google Apps Script
+      });
+
+      // Since we're using no-cors mode, we can't read the response
+      // but we assume success if no error is thrown
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours to discuss your project.",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        propertyAddress: '',
+        serviceType: '',
+        message: ''
+      });
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your form. Please try again or contact us directly.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -59,7 +88,7 @@ export const Contact = () => {
               <CardTitle className="text-2xl font-bold text-gray-900">Send Us a Message</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -73,6 +102,7 @@ export const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full"
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div>
@@ -87,6 +117,7 @@ export const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full"
+                      disabled={isSubmitting}
                     />
                   </div>
                 </div>
@@ -103,6 +134,7 @@ export const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full"
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div>
@@ -114,7 +146,8 @@ export const Contact = () => {
                       name="serviceType"
                       value={formData.serviceType}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                      disabled={isSubmitting}
                     >
                       <option value="">Select a package</option>
                       <option value="photos">Photos ($120)</option>
@@ -136,6 +169,7 @@ export const Contact = () => {
                     value={formData.propertyAddress}
                     onChange={handleChange}
                     className="w-full"
+                    disabled={isSubmitting}
                   />
                 </div>
 
@@ -151,13 +185,18 @@ export const Contact = () => {
                     rows={4}
                     className="w-full"
                     placeholder="Tell us about your property, timeline, or any special requirements..."
+                    disabled={isSubmitting}
                   />
                 </div>
 
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                  Send Message
+                <Button 
+                  onClick={handleSubmit}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
-              </form>
+              </div>
             </CardContent>
           </Card>
 
