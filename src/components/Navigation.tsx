@@ -30,7 +30,7 @@ export const Navigation = () => {
             <div className="ml-10 flex items-baseline space-x-8">
               <button onClick={() => scrollToSection('portfolio')} className="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Portfolio</button>
               <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Services</button>
-              <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-yellow-600 transition-colors font-medium">About</button>
+{/*               <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-yellow-600 transition-colors font-medium">About</button> */}
               <button onClick={() => scrollToSection('testimonials')} className="text-gray-700 hover:text-yellow-600 transition-colors font-medium">Reviews</button>
               <button onClick={() => scrollToSection('contact')} className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-2 rounded-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl font-medium">Contact</button>
             </div>
