@@ -18,38 +18,37 @@ export const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Replace this with your actual Google Apps Script Web App URL
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby64Sca5a6TUVgBe9WOJOTUDXy7Menbstc8i6s-Itw-njjAVX_1FjEGy_fcOSPfAqNF/exec';
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      // Submit to your own API endpoint instead of directly to Google Apps Script
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        mode: 'no-cors' // Required for Google Apps Script
       });
 
-      // Since we're using no-cors mode, we can't read the response
-      // but we assume success if no error is thrown
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you within 24 hours to discuss your project.",
-      });
+      if (response.ok) {
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you within 24 hours to discuss your project.",
+        });
 
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        propertyAddress: '',
-        serviceType: '',
-        message: ''
-      });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          propertyAddress: '',
+          serviceType: '',
+          message: ''
+        });
+      } else {
+        throw new Error('Failed to submit form');
+      }
 
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -221,7 +220,7 @@ export const Contact = () => {
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div>
