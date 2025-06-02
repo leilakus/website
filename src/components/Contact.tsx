@@ -19,7 +19,7 @@ export const Contact = () => {
   const { toast } = useToast();
 
   // Replace this with your actual Google Apps Script Web App URL
-  const GOOGLE_SCRIPT_URL = 'AKfycby64Sca5a6TUVgBe9WOJOTUDXy7Menbstc8i6s-Itw-njjAVX_1FjEGy_fcOSPfAqNF';
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby64Sca5a6TUVgBe9WOJOTUDXy7Menbstc8i6s-Itw-njjAVX_1FjEGy_fcOSPfAqNF/exec';
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
